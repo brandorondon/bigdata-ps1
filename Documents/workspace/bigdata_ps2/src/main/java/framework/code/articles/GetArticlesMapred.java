@@ -63,17 +63,24 @@ public class GetArticlesMapred {
 		    while((name = reader.readLine()) != null){
 		    	peopleArticlesTitles.add(name);
 		    }
-		    reader.close();
-			
+		    reader.close();			
 		}
 
 		@Override
 		public void map(LongWritable offset, WikipediaPage inputPage, Context context)
 				throws IOException, InterruptedException {
 			// TODO: You should implement getting article mapper here
+			Text title = new Text();
+			Text content = new Text();
 			
-			//if WikipediaPage is an article 
-			//	if page title is contained in the poeple.txt hashmap
+			if(inputPage.isArticle()){ 
+				String currTitle = inputPage.getTitle();
+				if (peopleArticlesTitles.contains(title)){
+					title.set(currTitle);
+					content.set(inputPage.getContent());
+					context.write(title, content);
+				}
+			}
 		}
 	}
 
