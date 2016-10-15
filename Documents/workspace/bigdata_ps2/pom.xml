@@ -3,6 +3,38 @@
   <groupId>fall2016.bd2</groupId>
   <artifactId>bigdata_ps2</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
+  <build>
+  	<plugins>
+	  	<plugin>
+  			<groupId>org.apache.maven.plugins</groupId>
+  			<artifactId>maven-shade-plugin</artifactId>
+  			<version>2.4.3</version>
+ 	 		<executions>
+  				<execution>
+  					<phase>package</phase>
+ 	 				<goals>
+  						<goal>shade</goal>
+  					</goals>
+ 	 			</execution>
+ 			</executions>
+ 	 		<configuration>
+  				<finalName>uber-${project.artifactId}-${project.version}</finalName>
+  				<minimizeJar>true</minimizeJar>
+<!--   				<filters>
+  					<filter>
+  						<artifact>edu.umd:cloud9</artifact>
+  						<includes>
+  							<include>edu.umd </include>
+  						</includes>
+  					</filter>
+  				</filters> -->
+  			</configuration>
+  		</plugin>
+  	</plugins>
+  </build>
+  
+  
   <dependencies>
   	<dependency>
   		<groupId>org.apache.hadoop</groupId>
@@ -19,5 +51,11 @@
   		<artifactId>hadoop-common</artifactId>
   		<version>2.3.0</version>
   	</dependency>
+  	<!-- https://mvnrepository.com/artifact/info.bliki.wiki/bliki-core -->
+	<dependency>
+   		<groupId>info.bliki.wiki</groupId>
+    	<artifactId>bliki-core</artifactId>
+    	<version>3.0.19</version>
+	</dependency>
   </dependencies>
 </project>

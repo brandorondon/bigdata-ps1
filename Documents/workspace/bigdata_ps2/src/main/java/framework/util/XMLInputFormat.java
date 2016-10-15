@@ -190,11 +190,11 @@ public class XMLInputFormat extends TextInputFormat {
 						// should be removed later for efficiency once we
 						// confirm that this code works correctly.
 
-						if (fsin instanceof Seekable) {
-							if (pos != ((Seekable) fsin).getPos()) {
-								throw new RuntimeException("bytes consumed error!");
-							}
-						}
+//						if (fsin instanceof Seekable) {
+//							if (pos != ((Seekable) fsin).getPos()) {
+//								throw new RuntimeException("bytes consumed error!");
+//							}
+//						}
 
 						buffer.reset();
 					}
