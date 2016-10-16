@@ -75,7 +75,7 @@ public class GetArticlesMapred {
 			
 			if(inputPage.isArticle()){ 
 				String currTitle = inputPage.getTitle();
-				if (peopleArticlesTitles.contains(title)){
+				if (peopleArticlesTitles.contains(currTitle)){
 					title.set(currTitle);
 					content.set(inputPage.getContent());
 					context.write(title, content);
