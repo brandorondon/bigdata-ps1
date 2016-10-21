@@ -71,14 +71,14 @@ public class GetArticlesMapred {
 				throws IOException, InterruptedException {
 			// TODO: You should implement getting article mapper here
 			Text title = new Text();
-			Text content = new Text();
+			Text xml = new Text();
 			
 			if(inputPage.isArticle()){ 
 				String currTitle = inputPage.getTitle();
 				if (peopleArticlesTitles.contains(currTitle)){
 					title.set(currTitle);
-					content.set(inputPage.getContent());
-					context.write(title, content);
+					xml.set(inputPage.getRawXML());
+					context.write(title, xml);
 				}
 			}
 		}
