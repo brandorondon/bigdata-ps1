@@ -25,27 +25,53 @@ public class Tokenizer {
 
 	}
 
-	public List<String> tokenize(String sentence) {
+	public static List<String> tokenize(String sentence) {
 		// TODO implement your tokenizing code here
 		
 		List<String> cleanedWords = new ArrayList<String>();
 		String[] itr = sentence.split(" ");
+
 		for (int i = 0; i < itr.length; i++) {
-			String currWord = itr[i];
-			int startPointer = 0;
-			//Iterate through until you find a letter lower case or upper case skipping over garbage
-			while (startPointer < currWord.length() && !Letters.containsKey(currWord.charAt(startPointer))) {
-				startPointer++;
-			}
-			int endPointer = currWord.length() - 1;
-			while (endPointer > -1 && !Letters.containsKey(currWord.charAt(endPointer))) {
-				endPointer--;
-			}
-			String currCleanedWord = currWord.substring(startPointer, endPointer).toLowerCase();
-			if (currCleanedWord.length() > 0 && !StopWords.containsKey(currCleanedWord)) {
-				cleanedWords.add(currCleanedWord);
+			String currWordCompound = itr[i];
+			List<String> currWordSplitIfCompound = splitCompoundWord(currWordCompound);
+			for (String currWord : currWordSplitIfCompound) {
+				int startPointer = 0;
+				//Iterate through until you find a letter lower case or upper case skipping over garbage
+				while (startPointer < currWord.length() && !Letters.containsKey(currWord.charAt(startPointer))) {
+					startPointer++;
+				}
+				int endPointer = currWord.length() - 1;
+				while (endPointer > -1 && !Letters.containsKey(currWord.charAt(endPointer))) {
+					endPointer--;
+				}
+
+				if (startPointer < currWord.length() && endPointer > -1) {
+					String currCleanedWord = currWord.substring(startPointer, endPointer + 1).toLowerCase();
+					if (currCleanedWord.length() > 2 && !StopWords.containsKey(currCleanedWord)) {
+						cleanedWords.add(currCleanedWord);
+					}
+				}	
 			}
 		}
 		return cleanedWords;
 	}
+	
+	public static List<String> splitCompoundWord(String word) {
+		List<String> toReturn = new ArrayList<String>();
+		boolean didSplit = false;
+		for (int i = 0; i < word.length(); i++) {
+			if (!Letters.containsKey(word.charAt(i))) {
+				String[] splitOnNonLetter = word.split(Character.toString(word.charAt(i)));
+				didSplit = true;
+				for (String curr : splitOnNonLetter) {
+					toReturn.add(curr);
+				}
+			}
+		}
+		if (!didSplit) {
+			toReturn.add(word);
+		}
+		return toReturn;
+	}
+  
 }
