@@ -1,6 +1,7 @@
 package framework.code.lemma;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -15,11 +16,17 @@ import edu.umd.cloud9.collection.wikipedia.WikipediaPage;
  */
 public class LemmaIndexMapred {
 	public static class LemmaIndexMapper extends Mapper<LongWritable, WikipediaPage, Text, StringIntegerList> {
-
+		private static Tokenizer tokenizer = new Tokenizer();
+		
 		@Override
 		public void map(LongWritable offset, WikipediaPage page, Context context) throws IOException,
 				InterruptedException {
 			// TODO: implement Lemma Index mapper here
+			String content = page.getContent();
+			List<String> tokens = tokenizer.tokenize(content);
+			
+			//lemmatizing goes here
+			
 		}
 	}
 }
