@@ -59,12 +59,14 @@ public class Tokenizer {
 	public static List<String> splitCompoundWord(String word) {
 		List<String> toReturn = new ArrayList<String>();
 		boolean didSplit = false;
+		int prev = 0;
 		for (int i = 0; i < word.length(); i++) {
 			if (!Letters.containsKey(word.charAt(i))) {
-				String[] splitOnNonLetter = word.split(Character.toString(word.charAt(i)));
-				didSplit = true;
-				for (String curr : splitOnNonLetter) {
-					toReturn.add(curr);
+				String subWord = word.substring(prev, i);
+				if (subWord.length() > 0) {
+					toReturn.add(subWord);
+					prev = i;
+					didSplit = true;
 				}
 			}
 		}
