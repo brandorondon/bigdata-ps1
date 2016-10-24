@@ -8,7 +8,7 @@ import java.util.Set;
 
 public class Tokenizer {
 	private static Set<String> stopWords = new HashSet<String>();
-	private static String regex = "[^a-zA-Z]";
+	private static String regex = "[^a-zA-Z.]"; //keep periods to maintain sentence boundaries for the Stanford CoreNLP lemmatizer 
 	
 	public Tokenizer() {
 		// TODO Auto-generated constructor stub
@@ -18,14 +18,15 @@ public class Tokenizer {
 		}
 	}
 
-	public List<String> tokenize(String sentence) {
+	public String tokenize(String sentence) {
 		List<String> tokens = new ArrayList<String>();
+		String cleaned = "";
 		String[] split = sentence.split(regex);
 		for(String token : split){
 			if(!stopWords.contains(token)){
-				tokens.add(token);
+				cleaned += " " + token;
 			}
 		}
-		return tokens;
+		return cleaned;
 	}
 }
