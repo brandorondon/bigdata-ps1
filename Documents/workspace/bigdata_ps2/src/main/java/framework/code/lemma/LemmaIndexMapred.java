@@ -1,17 +1,29 @@
 package framework.code.lemma;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.filecache.DistributedCache;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.GenericOptionsParser;
 
+import framework.code.articles.GetArticlesMapred;
+import framework.code.articles.GetArticlesMapred.GetArticlesMapper;
 import framework.util.StringIntegerList;
+import framework.util.WikipediaPageInputFormat;
 import edu.umd.cloud9.collection.wikipedia.WikipediaPage;
 
 import edu.stanford.nlp.ling.CoreAnnotations.LemmaAnnotation;
@@ -78,5 +90,27 @@ public class LemmaIndexMapred {
 	        }
 	        return lemmas;
 		}
+	}
+	
+	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException, URISyntaxException {
+		// TODO: you should implement the Job Configuration and Job call
+		// here
+		Configuration conf = new Configuration();
+		//assuming we have people.txt at the hdfs root 
+		String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
+		if (otherArgs.length != 2){
+			System.err.println("Usage: <get articles jar> <in> <out>");		
+		}
+		Job job = new Job(conf, "Lemmatize");
+		job.setJarByClass(LemmaIndexMapper.class);
+		job.setMapperClass(LemmaIndexMapper.class); 
+		job.setInputFormatClass(WikipediaPageInputFormat.class);
+		//no shuffling, combining or any sort of reducing occurs
+		job.setNumReduceTasks(0);
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(StringIntegerList.class);
+		FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
+		FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
+		System.exit(job.waitForCompletion(true)? 0: 1);	
 	}
 }
