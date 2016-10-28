@@ -25,6 +25,7 @@
 					<includes>
 						<include> edu.umd:cloud9 </include>
 						<include> edu.stanford.nlp:* </include>
+						<include>info.bliki.wiki:*</include>
 					</includes>
 					<!-- <excludes>
 						<exclude>*:*</exclude>
