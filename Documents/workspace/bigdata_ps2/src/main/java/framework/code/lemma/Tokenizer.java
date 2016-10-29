@@ -19,12 +19,11 @@ public class Tokenizer {
 	}
 
 	public String tokenize(String sentence) {
-		List<String> tokens = new ArrayList<String>();
 		String cleaned = "";
 		String[] split = sentence.split(regex);
 		for(String token : split){
-			if(!stopWords.contains(token)){
-				cleaned += " " + token;
+			if(!stopWords.contains(token) && (token.length() > 1)){
+				cleaned += " " + token.toLowerCase();
 			}
 		}
 		return cleaned;
